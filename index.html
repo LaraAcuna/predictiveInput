@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Predictive Test</title>
+    <meta name="author" content="Lara V. Acuña">
+    <meta name="description" content="Practica de Js, Css y Html en general. Just for fun!">
+</head>
+
+<body>
+    <h1>Predictive Inputs</h1>
+    <small>Styles not made yet...</small>
+    <p>1) With all options by default</p>
+    <div id="my_predictive"></div>
+    <p>2) Only if you type them</p>
+    <div id="my_poor_predictive"></div>
+    <br>
+    <div id="magic"></div>
+    <script src="predictive.js"></script>
+    <script>
+        const my_predictive = document.getElementById('my_predictive');
+        const my_poor_predictive = document.getElementById('my_poor_predictive');
+        const my_input_props = { classNames: ['my_class_1', 'my_class_2'], name: 'predictive' };
+        const my_options = [
+            {
+                displayText: "This is Random Option 1",
+                searchDisplay: true,
+                alternatives: ["1"],
+                selectAction: () => { alert('you clicked option 1. Hooray!') }
+            },
+            {
+                displayText: "Click here if you love kitties",
+                searchDisplay: true,
+                alternatives: ["2"],
+                selectAction: () => { window.open('https://media1.giphy.com/media/r8qaw0TZvreU0/200.gif', '_blank').focus() }
+            },
+            {
+                displayText: "What is Love?",
+                searchDisplay: false,
+                alternatives: ["3", "Haddaway"],
+                selectAction: () => {
+                    const paragraph = document.createElement("P");
+                    paragraph.appendChild(document.createTextNode("Baby don't hurt me"));
+                    document.getElementById('magic').appendChild(paragraph);
+                }
+            },
+        ]
+        makePredictive(my_predictive, '25%', my_input_props, my_options);
+        makePredictive(my_poor_predictive, '25%', my_input_props, my_options, false);
+    </script>
+</body>
