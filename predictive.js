@@ -24,49 +24,59 @@ function makePredictive(dom, width, inputProps, availableOptions, showAllByDefau
     }
 
     const predictive = document.createElement('DIV');
+    /*STYLES NEEDED, SHOULD NOT BE OVERWRITTEN (atleast by this moment)*/
     predictive.style.width = '100%';
     predictive.style.zIndex = 2;
     predictive.style.position = 'absolute';
-    predictive.style.border = "1px solid black";
-    predictive.style.backgroundColor = "white";
+    predictive.classList.add('predictive-input'); //This class provides visual styling
+    predictive.classList.add('hidden'); //Initially invisible
 
     input.oninput = () => {
-        while (predictive.lastChild) {
-            predictive.removeChild(predictive.lastChild);
-        }
+        clearPredictive(predictive);
         showPossibleOptions(availableOptions, input, predictive);
     }
     input.onblur = () => {
-        while (predictive.lastChild) {
-            predictive.removeChild(predictive.lastChild);
-        }
+        clearPredictive(predictive);
     }
     input.onfocus = () => {
-        if (showAllByDefault && input.value == "")
-            fillPredictive(availableOptions, input, predictive);
-        else
-            showPossibleOptions(availableOptions, input, predictive);
+        showPossibleOptions(availableOptions, input, predictive, showAllByDefault);
     }
 
     dom.appendChild(input);
     dom.appendChild(predictive);
 }
 
-function showPossibleOptions(options, input, predictiveDom) {
+function clearPredictive(predictiveDom) {
+    predictiveDom.classList.add('hidden');
+    while (predictiveDom.lastChild)
+        predictiveDom.removeChild(predictiveDom.lastChild);
+}
+
+function showPossibleOptions(options, input, predictiveDom, showAllByDefault) {
     const inputString = input.value.trim().toLowerCase();
+    let matchedOptions = [];
     if (inputString) {
-        const matchedOptions = options.filter(option => {
+        matchedOptions = options.filter(option => {
+            const { displayText, searchByDisplay = true, alternatives = null, selectAction = null } = option;
             const searchKeys = [];
-            if (option.searchDisplay) {
-                searchKeys.push(option.displayText);
+            if (searchByDisplay) {
+                searchKeys.push(displayText);
             }
-            if (option.alternatives) {
-                searchKeys.push(...option.alternatives);
+            if (alternatives) {
+                searchKeys.push(...alternatives);
             }
             return searchKeys.some(searchKey => searchKey.toLowerCase().includes(inputString));
         });
         fillPredictive(matchedOptions, input, predictiveDom);
+    } else if (showAllByDefault) {
+        matchedOptions = options;
+        fillPredictive(matchedOptions, input, predictiveDom);
     }
+    console.log(matchedOptions);
+    if (matchedOptions.length > 0)
+        predictiveDom.classList.remove('hidden');
+    else
+        predictiveDom.classList.add('hidden');
 }
 
 function fillPredictive(optionsToPut, input, predictiveDom) {

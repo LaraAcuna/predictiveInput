@@ -5,11 +5,11 @@
     <title>Predictive Test</title>
     <meta name="author" content="Lara V. Acuña">
     <meta name="description" content="Practica de Js, Css y Html en general. Just for fun!">
+    <link rel="stylesheet" href="predictive.css">
 </head>
 
 <body>
     <h1>Predictive Inputs</h1>
-    <small>Styles not made yet...</small>
     <p>1) With all options by default</p>
     <div id="my_predictive"></div>
     <p>2) Only if you type them</p>
@@ -24,19 +24,18 @@
         const my_options = [
             {
                 displayText: "This is Random Option 1",
-                searchDisplay: true,
+                searchByDisplay: true, //test
                 alternatives: ["1"],
                 selectAction: () => { alert('you clicked option 1. Hooray!') }
             },
             {
                 displayText: "Click here if you love kitties",
-                searchDisplay: true,
                 alternatives: ["2"],
                 selectAction: () => { window.open('https://media1.giphy.com/media/r8qaw0TZvreU0/200.gif', '_blank').focus() }
             },
             {
                 displayText: "What is Love?",
-                searchDisplay: false,
+                searchByDisplay: false,
                 alternatives: ["3", "Haddaway"],
                 selectAction: () => {
                     const paragraph = document.createElement("P");
