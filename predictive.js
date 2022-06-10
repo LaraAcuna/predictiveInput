@@ -44,6 +44,7 @@ function makePredictive(dom, width, inputProps, availableOptions, showAllByDefau
 
     dom.appendChild(input);
     dom.appendChild(predictive);
+    return dom;
 }
 
 function clearPredictive(predictiveDom) {
@@ -72,7 +73,6 @@ function showPossibleOptions(options, input, predictiveDom, showAllByDefault) {
         matchedOptions = options;
         fillPredictive(matchedOptions, input, predictiveDom);
     }
-    console.log(matchedOptions);
     if (matchedOptions.length > 0)
         predictiveDom.classList.remove('hidden');
     else
@@ -86,10 +86,15 @@ function fillPredictive(optionsToPut, input, predictiveDom) {
             if (option.selectAction) {
                 option.selectAction();
             }
+            showSelected(input, option);
             input.blur();
         }
         predictiveDom.appendChild(optionDom);
     })
+}
+
+function showSelected(input, option) {
+    input.value = option.displayText;
 }
 
 function createSelectableOption(option) {
